@@ -1,0 +1,38 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 70px;
+}
+
+.header__link {
+    display: flex;
+}
+
+.header__logo {
+    transition: opacity .2s linear;
+}
+
+.header__logo:hover {
+    opacity: .6;
+    cursor: pointer;
+}
+
+.header_type_auth {
+    background-color: #F3C1F8;
+}
+
+@media screen and (max-width: 800px) {
+    .header {
+        padding: 15px 30px;
+    }
+    .header__logo {
+        padding: 3px 0 3px 0;
+    }
+}
+
+@media screen and (max-width: 540px) {
+    .header {
+        padding: 18px 14px;
+    }
+}
