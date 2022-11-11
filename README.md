@@ -16,3 +16,4 @@ https://www.figma.com/file/lmu1bvqTvQwRYKjVbs2LK2/Diploma-(Copy)?node-id=891%3A3
 * Backend: https://api.kami2022.nomoredomains.icu/
 
 IP: 158.160.11.90
+ПулРеквест: https://github.com/Tatia2204/movies-explorer-frontend/pull/2
