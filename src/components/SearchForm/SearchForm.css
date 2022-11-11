@@ -182,7 +182,7 @@
     .search__toggle {
         position: absolute;
         top: 280px;
-        right: 65px;
+        right: 210px;
         border: none;
         margin: 0;
     }
@@ -190,5 +190,23 @@
     .search__films {
         font-size: 11px;
         margin: 0 0 0 13px;
+    }
+}
+
+@media screen and (max-width: 470px) {
+    .search__toggle {
+        right: 180px;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    .search__toggle {
+        right: 135px;
+    }
+}
+
+@media screen and (max-width: 350px) {
+    .search__toggle {
+        right: 95px;
     }
 }

@@ -6,7 +6,7 @@
     display: grid;
     justify-content: left;
     justify-items: start;
-    grid-template-columns: repeat(auto-fit, minmax(270px, 270px));
+    grid-template-columns: repeat(auto-fit, minmax(275px, 275px));
     gap: 32px 20px;
     margin: 0;
     padding: 70px 0 0;
@@ -55,7 +55,7 @@
 
     .cards__list {
         justify-items: center;
-        grid-template-columns: repeat(auto-fit, minmax(339px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(339px, 339px));
         gap: 36px 30px;
     }
 
