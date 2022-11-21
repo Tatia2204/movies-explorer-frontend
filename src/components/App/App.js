@@ -32,13 +32,13 @@ function App() {
         getUserInfo();
     }, []);
 
-    async function getUserInfo() {
+    function getUserInfo() {
         if (!JWT) {
             return setIsLoading(false);
         }
         else {
             try {
-                await mainApi
+                mainApi
                     .getUserInfo(JWT)
                     .then((data) => {
                         setCurrentUser(data);
