@@ -37,18 +37,18 @@ function App() {
             return setIsLoading(false);
         }
         else {
-            try {
-                mainApi
-                    .getUserInfo(JWT)
-                    .then((data) => {
-                        setCurrentUser(data);
-                        setLoggedIn(true);
-                    })
-            } catch (err) {
+            mainApi
+                .getUserInfo(JWT)
+                .then((data) => {
+                    setCurrentUser(data);
+                    setLoggedIn(true);
+                })
+                .catch ((err) => {
                 console.log(`Что-то пошло не так! Ошибка сервера ${err}`);
-            } finally {
+                })
+                .finally (() => {
                 setIsLoading(false);
-            }
+                });
         }
     }
 
