@@ -37,7 +37,7 @@ function Login({ onLogin }) {
         <section className="form">
             <div className="form__container">
                 <Link to="/" className="form__link">
-                    <img className="form__logo" src={logo} alt="Логотип"></img>
+                    <img className="form__logo" src={logo} alt="Логотип"/>
                 </Link>
                 <h2 className="form__title">Рады видеть!</h2>
                 <form className="form__inputs" onSubmit={handleSubmit}>

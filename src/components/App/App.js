@@ -15,7 +15,9 @@ import Popup from '../Popup/Popup';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import Preloader from '../Preloader/Preloader';
 import mainApi from '../../utils/MainApi';
-import Token from '../../utils/token';
+import * as moviesApi from "../../utils/MoviesApi";
+import { JWT, POPUP_MESSAGES } from '../../utils/constant';
+import { removeItemFilms } from "../../utils/removeItemFilms";
 
 function App() {
     const [isOpenPopup, setIsOpenPopup] = useState(false);
@@ -30,48 +32,52 @@ function App() {
         getUserInfo();
     }, []);
 
-    function getUserInfo() {
-        mainApi.getUserInfo()
-            .then((data) => {
-                setCurrentUser(data);
-                setLoggedIn(true);
-            })
-            .catch((err) => {
+    async function getUserInfo() {
+        if (!JWT) {
+            return setIsLoading(false);
+        }
+        else {
+            try {
+                await mainApi
+                    .getUserInfo(JWT)
+                    .then((data) => {
+                        setCurrentUser(data);
+                        setLoggedIn(true);
+                    })
+            } catch (err) {
                 console.log(`Что-то пошло не так! Ошибка сервера ${err}`);
-            })
-            .finally(() => {
+            } finally {
                 setIsLoading(false);
-            });
+            }
+        }
     }
 
     function onRegister(formData) {
-        mainApi.registerUser(formData)
+        moviesApi.registerUser(formData)
             .then((res) => {
                 if (res._id) {
-                    setPopupTitle('Вы успешно зарегистрировались!');
+                    setPopupTitle(POPUP_MESSAGES.SUCCESSFULLY.REGISTER);
                     setIsOpenPopup(true);
                     onLogin(formData);
                 }
             })
-            .catch((err) => {
-                setPopupTitle('Что-то пошло не так! Ошибка регистрации.');
+            .catch(() => {
+                setPopupTitle(POPUP_MESSAGES.ERROR.REGISTER);
                 setIsOpenPopup(true);
             });
     }
 
     function onLogin(formData) {
-        mainApi.loginUser(formData)
-            .then(({ token }) => {
-                if (token) {
-                    Token.saveToken(token);
-                    mainApi.updateToken();
-                    setLoggedIn(true);
-                    getUserInfo();
-                    history.push('/movies');
-                }
+        return moviesApi
+            .loginUser(formData)
+            .then((formData) => {
+                localStorage.setItem('jwt', formData.token);
+                setLoggedIn(true);
+                getUserInfo();
+                history.push('/movies');
             })
-            .catch((err) => {
-                setPopupTitle('Что-то пошло не так! Ошибка авторизации.');
+            .catch(() => {
+                setPopupTitle(POPUP_MESSAGES.ERROR.LOGIN);
                 setIsOpenPopup(true);
             });
     }
@@ -79,6 +85,9 @@ function App() {
     function openPopup(textError) {
         setPopupTitle(textError);
         setIsOpenPopup(true);
+        setTimeout(() => {
+            setIsOpenPopup(false)
+        }, 3000)
     }
 
     function closePopup() {
@@ -87,14 +96,9 @@ function App() {
     }
 
     function onSignOut() {
-        Token.removeToken();
+        localStorage.removeItem('jwt');
         setLoggedIn(false);
-        localStorage.removeItem('films');
-        localStorage.removeItem('filmsTumbler');
-        localStorage.removeItem('filmsInputSearch');
-        localStorage.removeItem('savedFilms');
-        localStorage.removeItem('savedFilmsTumbler');
-        localStorage.removeItem('savedFilmsInputSearch');
+        removeItemFilms();
     }
 
     return (

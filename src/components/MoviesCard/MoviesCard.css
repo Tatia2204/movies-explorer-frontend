@@ -53,9 +53,6 @@
 .card__button_delete {
     width: 16px;
     height: 16px;
-}
-
-.card__button_delete:hover {
     background: #F9F9F9 url(../../images/icon-delete.svg) center no-repeat;
 }
 

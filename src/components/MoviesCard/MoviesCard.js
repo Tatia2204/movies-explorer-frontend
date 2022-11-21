@@ -44,7 +44,7 @@ const MoviesCard = ({ film, savedMoviesToggle, filmsSaved }) => {
             {pathname === '/saved-movies' && currentUser._id === film.owner && (
             <li className="card">
                 <a className="card__image-content" href={film.trailer} target="_blank"  rel="noreferrer">
-                    <img className="card__image" src={`${film.image}`} alt={film.nameRU}></img>
+                    <img className="card__image" src={`${film.image}`} alt={film.nameRU}/>
                 </a>
                 <div className="card__element">
                     <p className="card__title">{film.nameRU}</p>
@@ -58,7 +58,7 @@ const MoviesCard = ({ film, savedMoviesToggle, filmsSaved }) => {
             {pathname === '/movies' && (
             <li className="card">
                 <a className="card__image-content" href={film.trailerLink} target="_blank"  rel="noreferrer">
-                    <img className="card__image" src={`https://api.nomoreparties.co${film.image.url}`} alt={film.nameRU}></img>
+                    <img className="card__image" src={`https://api.nomoreparties.co${film.image.url}`} alt={film.nameRU}/>
                 </a>
                 <div className="card__element">
                     <p className="card__title">{film.nameRU}</p>

@@ -3,8 +3,11 @@ import React, { useEffect, useState } from 'react';
 import SearchForm from '../SearchForm/SearchForm';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import Preloader from '../Preloader/Preloader';
-import moviesApi from '../../utils/MoviesApi';
+import * as moviesApi from "../../utils/MoviesApi";
 import mainApi from '../../utils/MainApi';
+import { JWT, MoviesCountConfig, MESSAGES,
+    POPUP_MESSAGES } from '../../utils/constant';
+import { removeItemFilms } from "../../utils/removeItemFilms";
 
 const Movies = ({ openPopup }) => {
     const [films, setFilms] = useState(null);
@@ -17,6 +20,11 @@ const Movies = ({ openPopup }) => {
     const [filmsShowed, setFilmsShowed] = useState(null);
     const [filmsWithTumbler, setFilmsWithTumbler] = useState([]);
     const [filmsShowedWithTumbler, setFilmsShowedWithTumbler] = useState([]);
+
+    const localStorageFilmsInitial = localStorage.getItem('filmsInitial');
+    const localStorageFilmsInputSearch = localStorage.getItem('filmsInputSearch');
+    const localStorageFilms = localStorage.getItem('films');
+    const localStorageFilmsTumbler = localStorage.getItem('filmsTumbler');
 
     useEffect(() => {
         setMoviesCount(getMoviesCount());
@@ -31,14 +39,7 @@ const Movies = ({ openPopup }) => {
     function getMoviesCount() {
         let countCards;
         const clientWidth = document.documentElement.clientWidth;
-        const MoviesCountConfig = {
-            '1300': [12, 4],
-            '1004': [12, 3],
-            '800': [12, 2],
-            '767': [8, 2],
-            '480': [7, 7],
-            '240': [5, 1],
-        };
+
         Object.keys(MoviesCountConfig)
             .sort((a, b) => a - b)
             .forEach((key) => {
@@ -57,12 +58,25 @@ const Movies = ({ openPopup }) => {
         setFilms(spliceFilms);
     }
 
+    function filterFilms(data, inputSearch) {
+        let filterData = data.filter(({ nameRU }) =>
+            nameRU.toLowerCase().includes(inputSearch.toLowerCase()));
+        localStorage.setItem('films', JSON.stringify(filterData));
+        localStorage.setItem('filmsInputSearch', inputSearch);
+
+        const spliceData = filterData.splice(0, MoviesCount[0]);
+        setFilmsShowed(spliceData);
+        setFilms(filterData);
+        setFilmsShowedWithTumbler(spliceData);
+        setFilmsWithTumbler(filterData);
+    }
+
     async function handleGetMovies(inputSearch) {
         setFilmsTumbler(false);
         localStorage.setItem('filmsTumbler', false);
 
         if (!inputSearch) {
-            setErrorText('Нужно ввести ключевое слово');
+            setErrorText(MESSAGES.NO_WORD);
             return false;
         }
 
@@ -70,25 +84,20 @@ const Movies = ({ openPopup }) => {
         setPreloader(true);
 
         try {
-            const data = await moviesApi.getMovies();
-            let filterData = data.filter(({ nameRU }) => nameRU.toLowerCase().includes(inputSearch.toLowerCase()));
-            localStorage.setItem('films', JSON.stringify(filterData));
-            localStorage.setItem('filmsInputSearch', inputSearch);
+            if (localStorageFilmsInitial === null) {
+                const data = await moviesApi.getInitialMovies(JWT);
+                localStorage.setItem('filmsInitial', JSON.stringify(data));
+                filterFilms(data, inputSearch);
+            } else {
+                const data = JSON.parse(localStorageFilmsInitial);
+                filterFilms(data, inputSearch);
+            }
 
-            const spliceData = filterData.splice(0, MoviesCount[0]);
-            setFilmsShowed(spliceData);
-            setFilms(filterData);
-            setFilmsShowedWithTumbler(spliceData);
-            setFilmsWithTumbler(filterData);
         } catch (err) {
-            setErrorText(
-                'Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз'
-            );
+            setErrorText(MESSAGES.ERROR);
 
             setFilms([]);
-            localStorage.removeItem('films');
-            localStorage.removeItem('filmsTumbler');
-            localStorage.removeItem('filmsInputSearch');
+            removeItemFilms();
         } finally {
             setPreloader(false);
         }
@@ -103,11 +112,22 @@ const Movies = ({ openPopup }) => {
             setFilmsWithTumbler(films);
             filterDataShowed = filmsShowed.filter(({ duration }) => duration <= 40);
             filterData = films.filter(({ duration }) => duration <= 40);
-        } else {
-            filterDataShowed = filmsShowedWithTumbler;
-            filterData = filmsWithTumbler;
-        }
 
+            saveStorageForTumbler(filterDataShowed, filterData, tumbler);
+        }
+        else {
+            if (localStorageFilmsInputSearch) {
+                await handleGetMovies(localStorageFilmsInputSearch);
+            } else {
+                filterDataShowed = filmsShowedWithTumbler;
+                filterData = filmsWithTumbler;
+
+                saveStorageForTumbler(filterDataShowed, filterData, tumbler);
+            }
+        }
+    }
+
+    function saveStorageForTumbler(filterDataShowed, filterData, tumbler) {
         localStorage.setItem('films', JSON.stringify(filterDataShowed.concat(filterData)));
         localStorage.setItem('filmsTumbler', tumbler);
         setFilmsShowed(filterDataShowed);
@@ -130,34 +150,32 @@ const Movies = ({ openPopup }) => {
                 nameEN: film.nameEN,
             };
             try {
-                await mainApi.addMovies(objFilm);
-                const newSaved = await mainApi.getMovies();
+                await mainApi.addMovies(objFilm, JWT);
+                const newSaved = await mainApi.getMovies(JWT);
                 setFilmsSaved(newSaved);
             } catch (err) {
-                openPopup('Во время добавления фильма произошла ошибка.');
+                openPopup(POPUP_MESSAGES.ERROR.ADD_FILM);
             }
         } else {
             try {
-                await mainApi.deleteMovies(film._id);
-                const newSaved = await mainApi.getMovies();
+                await mainApi.deleteMovies(film._id, JWT);
+                const newSaved = await mainApi.getMovies(JWT);
                 setFilmsSaved(newSaved);
             } catch (err) {
-                openPopup('Во время удаления фильма произошла ошибка.');
+                openPopup(POPUP_MESSAGES.ERROR.DELETE_FILM);
             }
         }
     }
 
     useEffect(() => {
         mainApi
-            .getMovies()
+            .getMovies(JWT)
             .then((data) => {
                 setFilmsSaved(data);
             })
-            .catch((err) => {
-                openPopup(`Ошибка сервера ${err}`);
+            .catch(() => {
+                openPopup(POPUP_MESSAGES.ERROR.SERVER);
             });
-
-        const localStorageFilms = localStorage.getItem('films');
 
         if (localStorageFilms) {
             const filterData = JSON.parse(localStorageFilms);
@@ -165,9 +183,6 @@ const Movies = ({ openPopup }) => {
             setFilms(filterData);
             setPreloader(false);
         }
-
-        const localStorageFilmsTumbler = localStorage.getItem('filmsTumbler');
-        const localStorageFilmsInputSearch = localStorage.getItem('filmsInputSearch');
 
         if (localStorageFilmsTumbler) {
             setFilmsTumbler(localStorageFilmsTumbler === 'true');

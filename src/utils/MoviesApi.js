@@ -1,30 +1,34 @@
-class MoviesApi {
-    constructor(config) {
-        this._address = config.address;
-        this._headers = config.headers;
-    }
+import { checkResponse, BASE_URL, MOVIES_URL } from './constant';
 
-    _checkResponse(res) {
-        if (res.ok) {
-            return res.json();
-        }
-
-        return Promise.reject(`Ошибка: ${res.status}`);
-    }
-
-    getMovies() {
-        return fetch(`${this._address}/beatfilm-movies`, {
-            method: 'GET',
-            headers: this._headers,
-        }).then(this._checkResponse);
-    }
+const headers = {
+    'Accept': 'application/json',
+    'Content-Type': 'application/json',
 }
 
-const moviesApi = new MoviesApi({
-    address: 'https://api.nomoreparties.co',
-    headers: {
-        'Content-Type': 'application/json',
-    },
-});
+// Регистрация пользователя
+export const registerUser = ({ name, email, password }) => {
+    return fetch(`${BASE_URL}/signup`, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({ name, email, password }),
+    }).then((res) => checkResponse(res));
+}
 
-export default moviesApi;
+// Авторизация пользователя
+export const loginUser = ({ email, password }) => {
+    return fetch(`${BASE_URL}/signin`, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({ email, password }),
+    }).then((res) => checkResponse(res));
+}
+// получение всех фильмов
+export const getInitialMovies = (token) => {
+    return fetch(`${MOVIES_URL}/beatfilm-movies`, {
+        method: 'GET',
+        headers: {
+            ...headers,
+            'Authorization' : `Bearer ${token}`,
+        },
+    }).then((res) => checkResponse(res));
+};

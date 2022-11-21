@@ -1,10 +1,13 @@
 import './SearchForm.css';
 import { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import icon from "../../images/icon-search.svg";
 
 const SearchForm = ({ handleGetMovies, filmsTumbler, filmsInputSearch, handleGetMoviesTumbler }) => {
     const [inputSearch, setInputSearch] = useState('');
     const [tumbler, setTumbler] = useState(false);
+    const { pathname } = useLocation();
+
     function handleInputChange(evt) {
         setInputSearch(evt.target.value);
     }
@@ -21,15 +24,21 @@ const SearchForm = ({ handleGetMovies, filmsTumbler, filmsInputSearch, handleGet
     }
 
     useEffect(() => {
-        setTumbler(filmsTumbler);
-        setInputSearch(filmsInputSearch);
+        if (pathname !== '/saved-movies') {
+            setTumbler(filmsTumbler);
+            setInputSearch(filmsInputSearch);
+        }
+        else {
+            setTumbler(tumbler);
+            setInputSearch(inputSearch);
+        }
         }, [filmsTumbler, filmsInputSearch]);
 
     return (
         <form className="search">
             <div className="search__container">
                 <label className='search__input-label' htmlFor='movie'>
-                    <img className="search__icon" src={icon} alt="Поиск"></img>
+                    <img className="search__icon" src={icon} alt="Поиск" />
                 </label>
                 <input className="search__input"
                        placeholder="Фильм"
@@ -46,7 +55,6 @@ const SearchForm = ({ handleGetMovies, filmsTumbler, filmsInputSearch, handleGet
                     <label className="search__tumbler">
                         <input className="search__checkbox"
                                type="checkbox"
-                               value={tumbler}
                                checked={tumbler}
                                onChange={handleTumblerChange} />
                         <span className="search__slider" />

@@ -11,7 +11,7 @@ const MoviesCardList = ({ films, savedMoviesToggle, filmsSaved, filmsRemains, ha
                 <ul className="cards__list">
                     {films.map((film) => (
                         <MoviesCard
-                            key={film.id || film.movieId}
+                            key={film.id || film.movieId + film.owner}
                             film={film}
                             savedMoviesToggle={savedMoviesToggle}
                             filmsSaved={filmsSaved}

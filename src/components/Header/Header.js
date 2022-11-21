@@ -9,7 +9,7 @@ const Header = ({ loggedIn, isLoading }) => {
     return (
         <header className={`header ${pathname !== '/' ? '' : 'header_type_auth'}`}>
             <Link to="/" className="header__link">
-                <img className="header__logo" src={logo} alt="Логотип"></img>
+                <img className="header__logo" src={logo} alt="Логотип" />
             </Link>
             {isLoading ? '' : loggedIn ? <Navigation /> : <NavAuth />}
         </header>

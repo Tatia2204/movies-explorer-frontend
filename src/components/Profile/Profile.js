@@ -2,6 +2,7 @@ import './Profile.css';
 import { useState, useContext } from 'react';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import mainApi from '../../utils/MainApi';
+import { JWT, POPUP_MESSAGES } from '../../utils/constant';
 
 const Profile = ({ onSignOut, openPopup }) => {
     const currentUser = useContext(CurrentUserContext);
@@ -14,14 +15,14 @@ const Profile = ({ onSignOut, openPopup }) => {
     const handleSubmit = (evt) => {
         evt.preventDefault();
 
-        mainApi.updateUserInfo({ name, email }).then(() => {
+        mainApi.updateUserInfo({ name, email }, JWT).then(() => {
             setVisibleButton(false);
             setLastName(name);
             setLastEmail(email);
-            openPopup('Данные успешно изменены!');
+            openPopup(POPUP_MESSAGES.SUCCESSFULLY.UPDATE_PROFILE);
         })
-            .catch((err) => {
-                openPopup(`Что-то пошло не так! ${err}`);
+            .catch(() => {
+                openPopup(POPUP_MESSAGES.ERROR.ERROR);
             });
     };
 
