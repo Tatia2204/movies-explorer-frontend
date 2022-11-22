@@ -4,7 +4,7 @@ import SearchForm from '../SearchForm/SearchForm';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import Preloader from '../Preloader/Preloader';
 import mainApi from '../../utils/MainApi';
-import { JWT, POPUP_MESSAGES, MESSAGES } from '../../utils/constant';
+import { POPUP_MESSAGES, MESSAGES } from '../../utils/constant';
 
 const SavedMovies = ({ openPopup }) => {
     const [films, setFilms] = useState(null);
@@ -13,6 +13,8 @@ const SavedMovies = ({ openPopup }) => {
     const [filmsShowed, setFilmsShowed] = useState([]);
     const [filmsShowedWithTumbler, setFilmsShowedWithTumbler] = useState([]);
     const [filmsWithTumbler, setFilmsWithTumbler] = useState([]);
+
+    const JWT = localStorage.getItem('jwt');
 
     async function handleGetMovies(inputSearch, tumbler) {
         setErrorText('');

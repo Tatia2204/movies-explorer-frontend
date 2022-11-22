@@ -6,9 +6,6 @@ export const checkResponse = (res) => {
         );
 };
 export const BASE_URL = 'https://api.kami2022.nomoredomains.icu';
-export const MOVIES_URL = 'https://api.nomoreparties.co';
-
-export const JWT = localStorage.getItem('jwt');
 
 export const POPUP_MESSAGES = {
     SUCCESSFULLY: {

@@ -2,7 +2,7 @@ import './Profile.css';
 import { useState, useContext } from 'react';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import mainApi from '../../utils/MainApi';
-import { JWT, POPUP_MESSAGES } from '../../utils/constant';
+import { POPUP_MESSAGES } from '../../utils/constant';
 
 const Profile = ({ onSignOut, openPopup }) => {
     const currentUser = useContext(CurrentUserContext);
@@ -11,6 +11,8 @@ const Profile = ({ onSignOut, openPopup }) => {
     const [email, setEmail] = useState(currentUser.email);
     const [lastEmail, setLastEmail] = useState(currentUser.email);
     const [isVisibleButton, setVisibleButton] = useState(false);
+
+    const JWT = localStorage.getItem('jwt');
 
     const handleSubmit = (evt) => {
         evt.preventDefault();

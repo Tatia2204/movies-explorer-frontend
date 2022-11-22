@@ -1,4 +1,4 @@
-import { checkResponse, BASE_URL, JWT } from './constant';
+import { checkResponse, BASE_URL } from './constant';
 
 class MainApi {
     constructor(options) {
@@ -69,7 +69,7 @@ class MainApi {
 const mainApi = new MainApi({
     address: BASE_URL,
     headers: {
-        'Authorization': `Bearer ${JWT}`,
+        'Authorization': `Bearer ${localStorage.getItem('jwt')}`,
         'Content-Type': 'application/json',
     },
 });

@@ -5,8 +5,7 @@ import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import Preloader from '../Preloader/Preloader';
 import * as moviesApi from "../../utils/MoviesApi";
 import mainApi from '../../utils/MainApi';
-import { JWT, MoviesCountConfig, MESSAGES,
-    POPUP_MESSAGES } from '../../utils/constant';
+import { MoviesCountConfig, MESSAGES, POPUP_MESSAGES } from '../../utils/constant';
 import { removeItemFilms } from "../../utils/removeItemFilms";
 
 const Movies = ({ openPopup }) => {
@@ -25,6 +24,7 @@ const Movies = ({ openPopup }) => {
     const localStorageFilmsInputSearch = localStorage.getItem('filmsInputSearch');
     const localStorageFilms = localStorage.getItem('films');
     const localStorageFilmsTumbler = localStorage.getItem('filmsTumbler');
+    const JWT = localStorage.getItem('jwt');
 
     useEffect(() => {
         setMoviesCount(getMoviesCount());

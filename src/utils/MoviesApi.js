@@ -1,4 +1,4 @@
-import { checkResponse, BASE_URL, MOVIES_URL } from './constant';
+import { checkResponse, BASE_URL } from './constant';
 
 const headers = {
     'Accept': 'application/json',
@@ -24,7 +24,7 @@ export const loginUser = ({ email, password }) => {
 }
 // получение всех фильмов
 export const getInitialMovies = (token) => {
-    return fetch(`${MOVIES_URL}/beatfilm-movies`, {
+    return fetch('https://api.nomoreparties.co/beatfilm-movies', {
         method: 'GET',
         headers: {
             ...headers,

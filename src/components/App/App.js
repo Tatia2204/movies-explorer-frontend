@@ -16,7 +16,7 @@ import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import Preloader from '../Preloader/Preloader';
 import mainApi from '../../utils/MainApi';
 import * as moviesApi from "../../utils/MoviesApi";
-import { JWT, POPUP_MESSAGES } from '../../utils/constant';
+import { POPUP_MESSAGES } from '../../utils/constant';
 import { removeItemFilms } from "../../utils/removeItemFilms";
 
 function App() {
@@ -28,12 +28,14 @@ function App() {
     const { pathname } = useLocation();
     const history = useHistory();
 
+   const JWT = localStorage.getItem('jwt');
+
     useEffect(() => {
         getUserInfo();
     }, []);
 
     function getUserInfo() {
-        if (!JWT) {
+        if (JWT === null) {
             return setIsLoading(false);
         }
         else {
