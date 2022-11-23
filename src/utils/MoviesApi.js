@@ -23,12 +23,9 @@ export const loginUser = ({ email, password }) => {
     }).then((res) => checkResponse(res));
 }
 // получение всех фильмов
-export const getInitialMovies = (token) => {
+export const getInitialMovies = () => {
     return fetch('https://api.nomoreparties.co/beatfilm-movies', {
         method: 'GET',
-        headers: {
-            ...headers,
-            'Authorization' : `Bearer ${token}`,
-        },
+        headers,
     }).then((res) => checkResponse(res));
 };

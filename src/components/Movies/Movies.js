@@ -85,7 +85,7 @@ const Movies = ({ openPopup }) => {
 
         try {
             if (localStorageFilmsInitial === null) {
-                const data = await moviesApi.getInitialMovies(JWT);
+                const data = await moviesApi.getInitialMovies();
                 localStorage.setItem('filmsInitial', JSON.stringify(data));
                 filterFilms(data, inputSearch);
             } else {
