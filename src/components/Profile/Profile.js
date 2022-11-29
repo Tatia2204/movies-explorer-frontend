@@ -1,11 +1,9 @@
 import './Profile.css';
-import { useState, useContext } from 'react';
-import { CurrentUserContext } from '../../contexts/CurrentUserContext';
+import { useState } from 'react';
 import mainApi from '../../utils/MainApi';
 import { POPUP_MESSAGES } from '../../utils/constant';
 
-const Profile = ({ onSignOut, openPopup }) => {
-    const currentUser = useContext(CurrentUserContext);
+const Profile = ({ onSignOut, openPopup, currentUser }) => {
     const [name, setName] = useState(currentUser.name);
     const [lastName, setLastName] = useState(currentUser.name);
     const [email, setEmail] = useState(currentUser.email);
@@ -31,7 +29,7 @@ const Profile = ({ onSignOut, openPopup }) => {
     function handleNameChange(evt) {
         const value = evt.target.value;
         setName(value);
-
+        currentUser.name = value;
         if (value !== lastName) {
             setVisibleButton(true);
         } else {
@@ -42,7 +40,7 @@ const Profile = ({ onSignOut, openPopup }) => {
     function handleEmailChange(evt) {
         const value = evt.target.value;
         setEmail(value);
-
+        currentUser.email = value;
         if (value !== lastEmail) {
             setVisibleButton(true);
         } else {
