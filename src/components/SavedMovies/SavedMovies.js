@@ -4,7 +4,7 @@ import SearchForm from '../SearchForm/SearchForm';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import Preloader from '../Preloader/Preloader';
 import mainApi from '../../utils/MainApi';
-import { POPUP_MESSAGES, MESSAGES } from '../../utils/constant';
+import { POPUP_MESSAGES, MESSAGES, SHORT_DURATION } from '../../utils/constant';
 
 const SavedMovies = ({ openPopup }) => {
     const [films, setFilms] = useState(null);
@@ -24,7 +24,7 @@ const SavedMovies = ({ openPopup }) => {
             const data = films;
             let filterData = data.filter(({ nameRU }) => nameRU.toLowerCase().includes(inputSearch.toLowerCase()));
 
-            if (tumbler) filterData = filterData.filter(({ duration }) => duration <= 40);
+            if (tumbler) filterData = filterData.filter(({ duration }) => duration <= SHORT_DURATION);
 
             setFilmsShowed(filterData);
 
@@ -44,8 +44,8 @@ const SavedMovies = ({ openPopup }) => {
         if (tumbler) {
             setFilmsShowedWithTumbler(filmsShowed);
             setFilmsWithTumbler(films);
-            filterDataShowed = filmsShowed.filter(({ duration }) => duration <= 40);
-            filterData = films.filter(({ duration }) => duration <= 40);
+            filterDataShowed = filmsShowed.filter(({ duration }) => duration <= SHORT_DURATION);
+            filterData = films.filter(({ duration }) => duration <= SHORT_DURATION);
         }
         else {
             filterDataShowed = filmsShowedWithTumbler;

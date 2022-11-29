@@ -39,3 +39,5 @@ export const MoviesCountConfig = {
     '480': [7, 7],
     '240': [5, 1],
 };
+
+export const SHORT_DURATION = 40;

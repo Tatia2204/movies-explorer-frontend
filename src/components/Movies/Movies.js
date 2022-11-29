@@ -5,7 +5,7 @@ import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import Preloader from '../Preloader/Preloader';
 import * as moviesApi from "../../utils/MoviesApi";
 import mainApi from '../../utils/MainApi';
-import { MoviesCountConfig, MESSAGES, POPUP_MESSAGES } from '../../utils/constant';
+import { MoviesCountConfig, MESSAGES, POPUP_MESSAGES, SHORT_DURATION } from '../../utils/constant';
 import { removeItemFilms } from "../../utils/removeItemFilms";
 
 const Movies = ({ openPopup }) => {
@@ -110,8 +110,8 @@ const Movies = ({ openPopup }) => {
         if (tumbler) {
             setFilmsShowedWithTumbler(filmsShowed);
             setFilmsWithTumbler(films);
-            filterDataShowed = filmsShowed.filter(({ duration }) => duration <= 40);
-            filterData = films.filter(({ duration }) => duration <= 40);
+            filterDataShowed = filmsShowed.filter(({ duration }) => duration <= SHORT_DURATION);
+            filterData = films.filter(({ duration }) => duration <= SHORT_DURATION);
 
             saveStorageForTumbler(filterDataShowed, filterData, tumbler);
         }
