@@ -22,6 +22,7 @@ export const loginUser = ({ email, password }) => {
         body: JSON.stringify({ email, password }),
     }).then((res) => checkResponse(res));
 }
+
 // получение всех фильмов
 export const getInitialMovies = () => {
     return fetch('https://api.nomoreparties.co/beatfilm-movies', {
