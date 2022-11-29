@@ -28,17 +28,14 @@ function App() {
     const { pathname } = useLocation();
     const history = useHistory();
 
-   const JWT = localStorage.getItem('jwt');
-
     useEffect(() => {
-        getUserInfo();
+        const JWT = localStorage.getItem('jwt');
+        getUserInfo(JWT);
     }, []);
 
     function getUserInfo() {
-        if (JWT === null) {
-            return setIsLoading(false);
-        }
-        else {
+        const JWT = localStorage.getItem('jwt');
+        if (JWT) {
             mainApi
                 .getUserInfo(JWT)
                 .then((data) => {
@@ -46,11 +43,14 @@ function App() {
                     setLoggedIn(true);
                 })
                 .catch ((err) => {
-                console.log(`Что-то пошло не так! Ошибка сервера ${err}`);
+                    console.log(`Что-то пошло не так! Ошибка сервера ${err}`);
                 })
                 .finally (() => {
-                setIsLoading(false);
+                    setIsLoading(false);
                 });
+        }
+        else {
+            return setIsLoading(false);
         }
     }
 
@@ -75,7 +75,8 @@ function App() {
             .then((formData) => {
                 localStorage.setItem('jwt', formData.token);
                 setLoggedIn(true);
-                getUserInfo();
+                const JWT = localStorage.getItem('jwt');
+                getUserInfo(JWT);
                 history.push('/movies');
             })
             .catch(() => {
@@ -100,6 +101,7 @@ function App() {
     function onSignOut() {
         localStorage.removeItem('jwt');
         setLoggedIn(false);
+        setCurrentUser({});
         removeItemFilms();
     }
 
@@ -137,6 +139,7 @@ function App() {
                         isLoading={isLoading}
                         onSignOut={onSignOut}
                         openPopup={openPopup}
+                        currentUser={currentUser}
                     />
 
                     <Route path="/signin">
