@@ -44,13 +44,26 @@ function App() {
                 })
                 .catch ((err) => {
                     console.log(`Что-то пошло не так! Ошибка сервера ${err}`);
+                    if (err.status === 401) {
+                        setPopupTitle(POPUP_MESSAGES.ERROR.ERROR_TOKEN);
+                    } else if (err.status === 404) {
+                        setPopupTitle(POPUP_MESSAGES.ERROR.ERROR_TOKEN_2);
+                    } else {
+                        setPopupTitle(POPUP_MESSAGES.ERROR.SERVER);
+                    }
+                    onSignOut();
                 })
                 .finally (() => {
                     setIsLoading(false);
                 });
+        } else if (JWT === null) {
+            setPopupTitle(POPUP_MESSAGES.ERROR.ERROR_TOKEN);
+            setIsLoading(false);
+            onSignOut();
         }
         else {
-            return setIsLoading(false);
+            setIsLoading(false);
+            onSignOut();
         }
     }
 
