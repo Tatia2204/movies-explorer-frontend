@@ -43,7 +43,7 @@ IP: 158.160.11.90
 ### Установка и запуск проекта:
 
 **Клонировать репозиторий:**
-git clone https://github.com/Tatia2204/movies-explorer-api.git
+git clone 
 
 **Установить зависимости:**
 npm install
