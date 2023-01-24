@@ -13,23 +13,23 @@ Movies Explorer - это интерактивная cтраница, на кот
 
 * HTML5;
 * CSS3:
-* Flexbox;
-* Grid Layout;
-* Positioning;
-* Adaptive UI;
-* Media Queries;
+  * Flexbox;
+  * Grid Layout;
+  * Positioning;
+  * Adaptive UI;
+  * Media Queries;
 * Методология БЭМ;
 * JavaScript:
-* Стиль CamelCase;
-* Промисы (Promise);
-* Асинхронность и оптимизация;
-* Rest API;
+  * Стиль CamelCase;
+  * Промисы (Promise);
+  * Асинхронность и оптимизация;
+  * Rest API;
 * Webpack;
 * React JS:
-* Create React App;
-* Портирование разметки в JSX;
-* Функциональные компоненты;
-* Хуки.
+  * Create React App;
+  * Портирование разметки в JSX;
+  * Функциональные компоненты;
+  * Хуки.
 
 ** Макет Дипломной работы:**
 * [Макет](https://www.figma.com/file/lmu1bvqTvQwRYKjVbs2LK2/Diploma-(Copy)?node-id=891%3A3857);
