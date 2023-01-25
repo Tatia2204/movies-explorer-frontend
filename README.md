@@ -31,7 +31,7 @@ Movies Explorer - это интерактивная cтраница, на кот
   * Функциональные компоненты;
   * Хуки.
 
-** Макет Дипломной работы:**
+### Макет Дипломной работы:
 * [Макет](https://www.figma.com/file/lmu1bvqTvQwRYKjVbs2LK2/Diploma-(Copy)?node-id=891%3A3857);
 
 * Frontend: https://kami2022.nomoredomains.icu/
